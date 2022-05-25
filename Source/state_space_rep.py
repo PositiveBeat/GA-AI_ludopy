@@ -17,6 +17,7 @@ class StateSpace:
         
         for piece in player_pieces:
             self.state.append(self.canActivate(die, piece))
+            self.state.append(self.canGoal(die, piece))
             self.state.append(self.canKill(die, piece))
             self.state.append(self.canStar(die, piece))
             self.state.append(self.willbeSection1(die, piece))
@@ -29,16 +30,23 @@ class StateSpace:
             self.state.append(self.willbeSafe(die, piece))
             
         # return np.array(self.state)   # Right formatting for ANN input
-        return np.resize(np.array(self.state), (44, 1))   # Right formatting for ANN input
+        return np.resize(np.array(self.state), (48, 1))   # Right formatting for ANN input
 
     
     
     ### Oppotunities ###
     
-    def canActivate(sefl, die, piece_position):
+    def canActivate(self, die, piece_position):
         if (piece_position != 0): return False
         if (die == 6): return True
-        return False
+        else: return False
+    
+    
+    def canGoal(self, die, piece_position):
+        position = piece_position + die
+        if (position == player.STAR_AT_GOAL_AREAL_INDX): return True
+        if (position == player.GOAL_INDEX): return True
+        else: return False
         
         
     def canKill(self, die, piece_position):
@@ -50,6 +58,7 @@ class StateSpace:
     
     def canStar(self, die, piece_position):
         position = piece_position + die
+        if (position == player.STAR_AT_GOAL_AREAL_INDX): return True
         star = np.any(np.array(player.STAR_INDEXS) == position)
         return star
     
@@ -91,14 +100,15 @@ class StateSpace:
     
     
     def willbeKilled(self, die, piece_position):
+        # TODO: land on enemy home globe with correct enemy
+        
+        # Check for duplicates on one field
         unique, counts = np.unique(self.enemy_pieces, return_counts=True)
         lookup = dict(zip(unique, counts)) 
-        
-        try:    # Check for duplicates on one field
+        try:    
             return lookup[piece_position + die] >= 2
         except:
             return False
-        # TODO: land on enemy home globe with correct enemy
 
 
     def willbeHomeStretch(self, die, piece_position):
