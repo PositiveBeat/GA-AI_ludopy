@@ -29,7 +29,7 @@ if __name__ == '__main__':
     log_chromosome.log_to_file('Code')
     avg_fitness = 0
 
-    gen_limit = 20
+    gen_limit = 10
     pop_size = 40
     game_quantity = 50
 
