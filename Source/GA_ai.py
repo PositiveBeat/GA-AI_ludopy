@@ -190,8 +190,10 @@ if __name__ == '__main__':
     
 
     # code = np.random.randint(2, size=network.total_nr_elements)
-    # code = 0.1 * np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8])
-    # network.update_layers(code)
+    code = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8])
+    network.update_layers(code)
+    
+    print(network.hidden_layers[0].w)
     
     
     # a = network.compute_result(x)

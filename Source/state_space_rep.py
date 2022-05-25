@@ -72,6 +72,9 @@ class StateSpace:
     
     
     def willbeDanger(self, die, piece_position):
+        if (self.willbeSafe(die, piece_position) == True): return False
+        if (self.willbeKilled(die, piece_position) == True): return True
+        
         position = piece_position + die
         
         enemy_globes = [player.ENEMY_1_GLOB_INDX, player.ENEMY_2_GLOB_INDX, player.ENEMY_3_GLOB_INDX]

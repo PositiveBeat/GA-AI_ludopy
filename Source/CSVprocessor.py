@@ -42,9 +42,10 @@ class CSVprocessor():
         return data
     
     
-    def plot_float_data(self, title=None, xlabel='x', ylabel='y', ylim=None, column_name='none', style='r'):
+    def plot_float_data(self, specific_columns, title=None, xlabel='x', ylabel='y', ylim=None, column_name='none', style='r'):
         
-        dataset = self.extract_float_columns(range(len(self.data)))
+        # dataset = self.extract_float_columns(range(len(self.data)))
+        dataset = self.extract_float_columns(specific_columns)
         t = dataset[0]
         data = dataset[1:]
         
@@ -69,5 +70,6 @@ class CSVprocessor():
 
 if __name__ == '__main__':
 
-    CSV = CSVprocessor('logs/data_plot.csv', 2)
-    CSV.plot_float_data(title='GA Algorithm', xlabel='generation', ylabel='fitness', ylim=[0,100], style='r')
+    CSV = CSVprocessor('logs/data_plot.csv', 3)
+    # CSV.plot_float_data(title='GA Algorithm', xlabel='generation', ylabel='fitness', ylim=[0,100], style='r')
+    CSV.plot_float_data([0, 1], title='GA Algorithm', xlabel='generation', ylabel='fitness', ylim=[0,100], style='r')
