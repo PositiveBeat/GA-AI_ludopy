@@ -16,8 +16,6 @@ class Layer:
     def __activation(self, z, func):
         if (func == 'linear'):
             return z
-        # if (func == 'relu'):
-        #     return np.max([z, 0])
         if (func == 'sigmoid'):
             return 1 / (1 + np.exp(-z)) 
         
@@ -151,9 +149,9 @@ class Population:
         for i in range(0, self.code_len):
             b = random.randint(0, 1)
             if (b == 0):
-                child_code.append(parent1.code[i])
+                child_code.append(copy.deepcopy(parent1.code[i]))
             elif (b == 1):
-                child_code.append(parent2.code[i])
+                child_code.append(copy.deepcopy(parent2.code[i]))
                 
         return Chromosome(child_code)
 

@@ -1,5 +1,6 @@
 '''
 Multiprocessing source: https://machinelearningmastery.com/multiprocessing-in-python/
+Network rules of thumb: https://towardsdatascience.com/17-rules-of-thumb-for-building-a-neural-network-93356f9930af
 '''
 
 import copy
@@ -7,7 +8,7 @@ import multiprocessing as mp
 import numpy as np
 import time
 
-from game_manager import run_game
+from game_manager import run_game, init_pool_processes
 from GA_ai import Network, Population
 from logger import Logger
 
@@ -19,7 +20,7 @@ def progress_bar(progress, total):
 
 
 if __name__ == '__main__':
-    pool = mp.Pool(10)  # Max processes running at a time
+    # pool = mp.Pool(10, initializer=init_pool_processes)  # Max processes running at a time
     start_time = time.perf_counter()
 
     # Logging information
@@ -30,13 +31,13 @@ if __name__ == '__main__':
     avg_fitness = 0
 
 
-    gen_limit = 1
+    gen_limit = 20
     pop_size = 40
-    game_quantity = 50
+    game_quantity = 20
 
 
     # Initialize network (input_size, output_size, nr_hidden_layers, hidden_size)
-    network = Network(44, 4, 2, 10)
+    network = Network(44, 4, 2, 8)
     print('Network element size: ' + str(network.total_nr_elements) + '\n')
     # Initialize population (population_size, code_size)
     pop = Population(pop_size, network.total_nr_elements)
@@ -54,7 +55,17 @@ if __name__ == '__main__':
             network.update_layers(chromosome.code)
 
             # Spawn processes to run games in parallel
-            processes = [pool.apply_async(run_game, args=(copy.deepcopy(network),)) for _ in range(game_quantity)]
+            # with mp.Pool(10, initializer=init_pool_processes) as pool:
+            #     processes = [pool.map(run_game, (copy.deepcopy(network),)) for _ in range(game_quantity)]
+
+            
+            # processes = []
+            with mp.Pool(mp.cpu_count()-2 or 1, initializer=init_pool_processes) as pool:
+                processes = [pool.apply_async(run_game, (copy.deepcopy(network),)) for _ in range(game_quantity)]
+            # result = np.array(processes)
+            
+            
+            # processes = [pool.apply_async(run_game, args=(copy.deepcopy(network),)) for _ in range(game_quantity)]
             result = np.array([p.get() for p in processes])
             
             score = np.sum(result)

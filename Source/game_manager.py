@@ -8,6 +8,10 @@ from state_space_rep import StateSpace
 from logger import Logger
 
 
+def init_pool_processes():
+    np.random.seed()
+
+
 def run_game(network):
     # Game setup
     g = ludopy.Game()
