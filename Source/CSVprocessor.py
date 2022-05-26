@@ -70,6 +70,8 @@ class CSVprocessor():
 
 if __name__ == '__main__':
 
-    CSV = CSVprocessor('logs/data_plot.csv', 3)
+    CSV = CSVprocessor('logs/data_plot_3.csv', 3)
     # CSV.plot_float_data(title='GA Algorithm', xlabel='generation', ylabel='fitness', ylim=[0,100], style='r')
-    CSV.plot_float_data([0, 1], title='GA Algorithm', xlabel='generation', ylabel='fitness', ylim=[0,100], style='r')
+    CSV.plot_float_data([0, 1], title='GA Algorithm', xlabel='generation', ylabel='win-rate', ylim=[0,100], style='r')
+    # CSV.plot_float_data([0, 2], title='GA Algorithm', xlabel='generation', ylabel='average fitness', style='r')
+
